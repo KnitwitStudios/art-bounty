@@ -1,0 +1,72 @@
+<%- include('header'); -%>
+
+<main role="main">
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1 class="jumbotron-heading">Welcome, <%= profile.name %>!</h1>
+      <hr/>
+      <div id="options" class="row">
+        <div class="col-4">
+          <select class="custom-select custom-select-med text-info" id="tagSelect" onchange="toggleTags()">
+            <option value="" selected>Show All Tags</option>
+            <% profile.tags.forEach(function(tag){ %>
+              <%- `<option value="${tag}">${tag}</option>` %>
+            <% }); %>
+          </select>
+        </div>
+        <div class="col-4">
+            <select class="custom-select custom-select-med text-success" id="rowSwitch" onchange="toggleRows()">
+              <option value="1" selected>Unclaimed Bounties</option>
+              <option value="2">My Bounties</option>
+              <% if (profile.isAdmin){ %>
+              <option value="3">All Bounties</option>
+              <% } %>
+            </select>
+        </div>
+        <div class="col-4">
+          <% if (profile.isAdmin){ %>
+            <a type="button" class="btn btn-secondary text-white float-right" data-toggle="modal" data-target="#adminModal" onclick="editMode(undefined);">Create</a>
+            <%- include('adminCard'); %>
+          <% } %>
+          <a type="button" class="btn btn-primary text-white float-right" onclick="window.location=window.location.href.replace('board', 'logout');">Logout</a>
+        </div>
+    </div>
+    <hr/>
+  </section>
+  <div class="album py-5 bg-light">
+    <div class="container">
+      <div class="row" id="claimedRow">
+        <% if (profile.claimedBounties.length != 0) { %>
+          <% profile.claimedBounties.forEach(function(b){ %>
+            <%- include('bountyCard', {bounty: b, userId: profile.userId, claimed: true, isAdmin: profile.isAdmin}); %>
+          <% }); %>
+        <% } else { %>
+          <h4 class="text-center col-8 text-light bg-info py-2" style="margin:auto; box-shadow: 4px 4px 2px 1px lightgray;">You have no claimed bounties!</h4>
+        <% } %>
+      </div>
+      <div class="row" id="unclaimedRow">
+        <% if (profile.unclaimedBounties.length != 0) { %>
+          <% profile.unclaimedBounties.forEach(function(b){ %>
+            <%- include('bountyCard', {bounty: b, userId: profile.userId, claimed: false, isAdmin: profile.isAdmin}); %>
+          <% }); %>
+        <% } else { %>
+          <h4 class="text-center col-8 text-light bg-info py-2" style="margin:auto; box-shadow: 4px 4px 2px 1px lightgray;">There are no bounties available!</h4>
+        <% } %>
+      </div>
+      <% if (profile.isAdmin) { %>
+      <div class="row" id="allRow">
+        <% if (profile.allBounties.length != 0) { %>
+          <% profile.allBounties.forEach(function(b){ %>
+            <%- include('bountyCard', {bounty: b, userId: profile.userId, claimed: false, isAdmin: profile.isAdmin}); %>
+          <% }); %>
+        <% } else { %>
+          <h4 class="text-center col-8 text-light bg-info py-2" style="margin:auto; box-shadow: 4px 4px 2px 1px lightgray;">There are no bounties!</h4>
+        <% } %>
+      </div>
+      <% } %>
+    </div>
+  </div>
+  <script src="util.js" type="text/javascript"></script>
+</main>
+
+<%- include('footer'); -%>

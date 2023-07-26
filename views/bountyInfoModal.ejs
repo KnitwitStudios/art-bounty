@@ -1,0 +1,26 @@
+<div class="modal fade" id="<%= `id${bountyId}InfoModal` %>" tabindex="-1" role="dialog" aria-labelledby="<%= `id${bountyId}Center` %>" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="<%= `id${bountyId}Title` %>"><%- title %></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul><% specifications.forEach(function(spec){ %>
+            <%- `<li>${spec}</li>` %>
+        <% }); %></ul>    
+      </div>
+      <% if (!isAdmin) { %>
+        <div class="modal-footer">
+          <% if (!claimed) { %>
+            <button type="button" class="btn btn-primary" onclick='claim("<%- title %>", "<%- userId %>", true);'>Claim</button>
+          <%} else { %>
+            <button type="button" class="btn btn-secondary" onclick='claim("<%- title %>", "<%- userId %>", false);'>Unclaim</button>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>

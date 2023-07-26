@@ -1,0 +1,39 @@
+<div class="col-md-4<% bounty.tags.forEach(function(tag){ %><%- ` tag-${tag}` %><% }) %> tagged">
+    <div class="card mb-3 box-shadow">
+        <div class="card-title text-center">
+            <% if (isAdmin){ %>
+                <button type="button" class="close" onclick='removeBounty("<%= bounty.title %>")'>&times;</button>
+            <% } %>
+            <h5 class="text-capitalize"><u><%= bounty.title %></u></h5>
+        </div>
+        <img class="card-img-top" alt="<%= bounty.thumbnail %>" src="<%= `img/${bounty.thumbnail}` %>">
+        <div class="card-body">
+            <p class="card-text text-justify lead"><%= bounty.description %></p>
+            <% if (isAdmin){ %>
+                <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 5px;">
+                    <select class="custom-select custom-select-sm" onchange="assign(this, '<%= bounty.title %>', '<%= bounty.claimer %>', '<%= bounty.id %>')">
+                        <option value=""></option>
+                        <% profile.users.forEach(function(user){ %>
+                            <% if (user === bounty.claimer){ %>
+                                <%- `<option value="${user}" selected><b>${user}</b></option>` %>
+                            <% } else { %>
+                                <%- `<option value="${user}">${user}</option>` %>
+                            <% } %>
+                        <% }); %>
+                    </select>
+                </div>
+            <% } %>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="<%= `#id${bounty.id}InfoModal` %>">See More</button>
+                    <% if (isAdmin){ %>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#adminModal" onclick="editMode('<%= bounty %>');">Edit</button>
+                    <% } %>
+                </div>
+                <h5 class="text-muted"><%= `\$${bounty.price}` %></h5>
+            </div>
+        </div>
+    </div>
+    <%- include('bountyInfoModal', {userId: userId, title: bounty.title, specifications: bounty.specifications, claimed: claimed, bountyId: bounty.id, isAdmin: isAdmin}); -%>
+</div>
+
