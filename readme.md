@@ -19,7 +19,7 @@ On the first run, all needed directories will be created.
         "thumbnail": "",
         "price": 20,
         "tags": ["sprite", "game", "animation"],
-        "description": "Here is a shitton of text",
+        "description": "Here is a description",
         "specifications": ["8 colors", "64x64", "8 frames of stitching animation", "each stitch has a unique texture for color-blind users"]
     }
 ```
